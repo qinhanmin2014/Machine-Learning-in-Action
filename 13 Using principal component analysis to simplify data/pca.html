@@ -11832,14 +11832,14 @@ div#notebook {
     <span class="n">meanVals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dataMat</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">meanRemoved</span> <span class="o">=</span> <span class="n">dataMat</span> <span class="o">-</span> <span class="n">meanVals</span>
     <span class="n">covMat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">meanRemoved</span><span class="p">,</span> <span class="n">rowvar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">eigVals</span><span class="p">,</span> <span class="n">eigVects</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">covMat</span><span class="p">))</span>
+    <span class="n">eigVals</span><span class="p">,</span> <span class="n">eigVects</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">covMat</span><span class="p">)</span>
     <span class="c1"># Sort top N smallest to largest</span>
-    <span class="n">eigValInd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">eigVals</span><span class="p">)</span>
-    <span class="n">eigValInd</span> <span class="o">=</span> <span class="n">eigValInd</span><span class="p">[:</span><span class="o">-</span><span class="p">(</span><span class="n">topNfeat</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">eigValInd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">eigVals</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">eigValInd</span> <span class="o">=</span> <span class="n">eigValInd</span><span class="p">[:</span><span class="n">topNfeat</span><span class="p">]</span>
     <span class="n">redEigVects</span> <span class="o">=</span> <span class="n">eigVects</span><span class="p">[:,</span> <span class="n">eigValInd</span><span class="p">]</span>
     <span class="c1"># Transform data into new dimensions</span>
-    <span class="n">lowDDataMat</span> <span class="o">=</span> <span class="n">meanRemoved</span> <span class="o">*</span> <span class="n">redEigVects</span>
-    <span class="n">reconMat</span> <span class="o">=</span> <span class="p">(</span><span class="n">lowDDataMat</span> <span class="o">*</span> <span class="n">redEigVects</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">+</span> <span class="n">meanVals</span>
+    <span class="n">lowDDataMat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">meanRemoved</span><span class="p">,</span> <span class="n">redEigVects</span><span class="p">)</span>
+    <span class="n">reconMat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">lowDDataMat</span><span class="p">,</span> <span class="n">redEigVects</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">+</span> <span class="n">meanVals</span>
     <span class="k">return</span> <span class="n">lowDDataMat</span><span class="p">,</span> <span class="n">reconMat</span>
 </pre></div>
 
@@ -11865,7 +11865,7 @@ div#notebook {
     <span class="n">fr</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">fileName</span><span class="p">)</span>
     <span class="n">stringArr</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">delim</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fr</span><span class="o">.</span><span class="n">readlines</span><span class="p">()]</span>
     <span class="n">datArr</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">stringArr</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">datArr</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">datArr</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -11904,7 +11904,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">lowDMat</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lowDMat</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 
 </div>
@@ -11939,9 +11939,9 @@ div#notebook {
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">dataMat</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dataMat</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">dataMat</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dataMat</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
            <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">reconMat</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">reconMat</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">reconMat</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">reconMat</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
            <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
 </pre></div>
 
@@ -11961,7 +11961,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.collections.PathCollection at 0x1ea5a05e550&gt;</pre>
+<pre>&lt;matplotlib.collections.PathCollection at 0x2be22bd2438&gt;</pre>
 </div>
 
 </div>
@@ -11975,8 +11975,8 @@ div#notebook {
 
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXQAAAD8CAYAAABn919SAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
-AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4xLCBo
-dHRwOi8vbWF0cGxvdGxpYi5vcmcvDW2N/gAAIABJREFUeJzsnXecVPXV/993+uxsmdk226hLBzEa
+AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4yLCBo
+dHRwOi8vbWF0cGxvdGxpYi5vcmcvOIA7rQAAIABJREFUeJzsnXecVPXV/993+uxsmdk226hLBzEa
 yxOKCzGiGKORqIgoRaxJUOPvCaKidLBEIQENi8KjxoaiAgLCKkiTIggSEEUBAYEtbJ3e7++Pu3PZ
 KdtgQVjv+/WalzJz586dmZ1zzz3fz/kcQRRFFBQUFBQufFQ/9wEoKCgoKLQMSkBXUFBQaCUoAV1B
 QUGhlaAEdAUFBYVWghLQFRQUFFoJSkBXUFBQaCUoAV1BQUGhlaAEdAUFBYVWghLQFRQUFFoJmnP5
@@ -12714,12 +12714,11 @@ pVSM0ISulFIx4v8BLtpJzVePO10AAAAASUVORK5CYII=
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Function to replace missing values with mean</span>
 <span class="k">def</span> <span class="nf">replaceNanWithMean</span><span class="p">():</span>
     <span class="n">datMat</span> <span class="o">=</span> <span class="n">loadDataSet</span><span class="p">(</span><span class="s1">&#39;secom.data&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
-    <span class="n">numFeat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">datMat</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numFeat</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">datMat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
         <span class="c1"># Find mean of non-NaN values</span>
-        <span class="n">meanVal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">datMat</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">datMat</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">A</span><span class="p">))[</span><span class="mi">0</span><span class="p">],</span> <span class="n">i</span><span class="p">])</span>
+        <span class="n">meanVal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">datMat</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">datMat</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]),</span> <span class="n">i</span><span class="p">])</span>
         <span class="c1"># Set NaN values to mean</span>
-        <span class="n">datMat</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">datMat</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">A</span><span class="p">))[</span><span class="mi">0</span><span class="p">],</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">meanVal</span>
+        <span class="n">datMat</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">datMat</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]),</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">meanVal</span>
     <span class="k">return</span> <span class="n">datMat</span>
 </pre></div>
 
@@ -12751,8 +12750,7 @@ pVSM0ISulFIx4v8BLtpJzVePO10AAAAASUVORK5CYII=
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">eigVals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">eigVals</span><span class="p">)))</span>
-<span class="n">eigValInd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">eigVals</span><span class="p">)</span>
-<span class="n">eigValInd</span> <span class="o">=</span> <span class="n">eigValInd</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">eigValInd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">eigVals</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">sortedEigVals</span> <span class="o">=</span> <span class="n">eigVals</span><span class="p">[</span><span class="n">eigValInd</span><span class="p">]</span>
 <span class="n">total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sortedEigVals</span><span class="p">)</span>
 <span class="n">varPercentage</span> <span class="o">=</span> <span class="n">sortedEigVals</span> <span class="o">/</span> <span class="n">total</span> <span class="o">*</span> <span class="mi">100</span>
@@ -12777,24 +12775,12 @@ pVSM0ISulFIx4v8BLtpJzVePO10AAAAASUVORK5CYII=
 <div class="prompt"></div>
 
 
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>D:\ProgramData\Anaconda3\lib\site-packages\ipykernel_launcher.py:1: ComplexWarning: Casting complex values to real discards the imaginary part
-  &#34;&#34;&#34;Entry point for launching an IPython kernel.
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
 
 
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYIAAAEKCAYAAAAfGVI8AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
-AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4xLCBo
-dHRwOi8vbWF0cGxvdGxpYi5vcmcvDW2N/gAAIABJREFUeJzt3XmcHHWd//HXp3tmkpnJOZPJQchM
+AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4yLCBo
+dHRwOi8vbWF0cGxvdGxpYi5vcmcvOIA7rQAAIABJREFUeJzt3XmcHHWd//HXp3tmkpnJOZPJQchM
 OAJIghyO3CDKFfEAXQTXK7qu7K6oeKwLLutP3NX9ieuqG2RdUFjRH5egEcQIhAACijkJkJBgQshF
 jsk9IZNJZro/vz+qetKZzFE5qqtn+v18PPrRVdX1rfp0TU9/+ltV3+/X3B0RESldqaQDEBGRZCkR
 iIiUOCUCEZESp0QgIlLilAhEREqcEoGISIlTIhARKXFKBCIiJU6JQESkxJUlHUAUI0aM8PHjxycd
@@ -13012,7 +12998,7 @@ KRGIiJQ4JQIRkRKnRCAiUuKUCERESpwSgYhIifv/b1oo0zbv380AAAAASUVORK5CYII=
 <div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">lowDMat</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lowDMat</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 
 </div>
