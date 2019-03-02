@@ -11916,7 +11916,7 @@ div#notebook {
         <span class="n">ascendTree</span><span class="p">(</span><span class="n">leafNode</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="n">prefixPath</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">findPrefixPath</span><span class="p">(</span><span class="n">basePat</span><span class="p">,</span> <span class="n">treeNode</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">findPrefixPath</span><span class="p">(</span><span class="n">treeNode</span><span class="p">):</span>
     <span class="n">condPats</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">while</span> <span class="n">treeNode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">prefixPath</span> <span class="o">=</span> <span class="p">[]</span>
@@ -11948,7 +11948,7 @@ div#notebook {
         <span class="n">newFreqSet</span> <span class="o">=</span> <span class="n">preFix</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">newFreqSet</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">basePat</span><span class="p">)</span>
         <span class="n">freqItemList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">newFreqSet</span><span class="p">)</span>
-        <span class="n">condPattBases</span> <span class="o">=</span> <span class="n">findPrefixPath</span><span class="p">(</span><span class="n">basePat</span><span class="p">,</span> <span class="n">headerTable</span><span class="p">[</span><span class="n">basePat</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">condPattBases</span> <span class="o">=</span> <span class="n">findPrefixPath</span><span class="p">(</span><span class="n">headerTable</span><span class="p">[</span><span class="n">basePat</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
         <span class="c1"># Construct cond. FP-tree from cond. pattern base</span>
         <span class="n">myCondTree</span><span class="p">,</span> <span class="n">myHead</span> <span class="o">=</span> <span class="n">createTree</span><span class="p">(</span><span class="n">condPattBases</span><span class="p">,</span> <span class="n">minSup</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">myHead</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -12076,11 +12076,12 @@ div#notebook {
        r   1
          p   1
        x   3
-         y   3
+         y   2
            t   2
              s   2
                q   1
-           r   1
+         r   1
+           y   1
              t   1
                q   1
                  p   1
@@ -12119,7 +12120,7 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>[{&#39;p&#39;}, {&#39;q&#39;}, {&#39;r&#39;}, {&#39;y&#39;}, {&#39;z&#39;, &#39;y&#39;}, {&#39;y&#39;, &#39;x&#39;}, {&#39;z&#39;, &#39;y&#39;, &#39;x&#39;}, {&#39;t&#39;}, {&#39;z&#39;, &#39;t&#39;}, {&#39;t&#39;, &#39;y&#39;}, {&#39;z&#39;, &#39;t&#39;, &#39;y&#39;}, {&#39;t&#39;, &#39;x&#39;}, {&#39;z&#39;, &#39;t&#39;, &#39;x&#39;}, {&#39;t&#39;, &#39;x&#39;, &#39;y&#39;}, {&#39;z&#39;, &#39;t&#39;, &#39;x&#39;, &#39;y&#39;}, {&#39;s&#39;}, {&#39;x&#39;, &#39;s&#39;}, {&#39;x&#39;}, {&#39;z&#39;, &#39;x&#39;}, {&#39;z&#39;}]
+<pre>[{&#39;p&#39;}, {&#39;q&#39;}, {&#39;r&#39;}, {&#39;y&#39;}, {&#39;x&#39;, &#39;y&#39;}, {&#39;z&#39;, &#39;y&#39;}, {&#39;x&#39;, &#39;z&#39;, &#39;y&#39;}, {&#39;t&#39;}, {&#39;x&#39;, &#39;t&#39;}, {&#39;z&#39;, &#39;t&#39;}, {&#39;x&#39;, &#39;z&#39;, &#39;t&#39;}, {&#39;y&#39;, &#39;t&#39;}, {&#39;x&#39;, &#39;y&#39;, &#39;t&#39;}, {&#39;z&#39;, &#39;y&#39;, &#39;t&#39;}, {&#39;x&#39;, &#39;z&#39;, &#39;y&#39;, &#39;t&#39;}, {&#39;s&#39;}, {&#39;x&#39;, &#39;s&#39;}, {&#39;x&#39;}, {&#39;x&#39;, &#39;z&#39;}, {&#39;z&#39;}]
 </pre>
 </div>
 </div>
@@ -12307,7 +12308,7 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>[{&#39;1&#39;}, {&#39;1&#39;, &#39;6&#39;}, {&#39;11&#39;}, {&#39;3&#39;, &#39;11&#39;}, {&#39;3&#39;, &#39;6&#39;, &#39;11&#39;}, {&#39;6&#39;, &#39;11&#39;}, {&#39;3&#39;}, {&#39;3&#39;, &#39;6&#39;}, {&#39;6&#39;}]
+<pre>[{&#39;1&#39;}, {&#39;6&#39;, &#39;1&#39;}, {&#39;11&#39;}, {&#39;3&#39;, &#39;11&#39;}, {&#39;3&#39;, &#39;6&#39;, &#39;11&#39;}, {&#39;6&#39;, &#39;11&#39;}, {&#39;3&#39;}, {&#39;6&#39;, &#39;3&#39;}, {&#39;6&#39;}]
 </pre>
 </div>
 </div>
