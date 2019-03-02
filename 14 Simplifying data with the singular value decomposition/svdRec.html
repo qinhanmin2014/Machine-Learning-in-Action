@@ -12139,9 +12139,10 @@ div#notebook {
     <span class="n">simTotal</span><span class="p">,</span> <span class="n">ratSimTotal</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span>
     <span class="n">U</span><span class="p">,</span> <span class="n">Sigma</span><span class="p">,</span> <span class="n">VT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">dataMat</span><span class="p">)</span>
     <span class="c1"># Create diagonal matrix</span>
-    <span class="n">Sig3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">Sigma</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+    <span class="c1"># Sig3 = np.diag(Sigma[:3])</span>
     <span class="c1"># Create transformed items</span>
-    <span class="n">xformedItems</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">dataMat</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">Sig3</span><span class="p">))</span>
+    <span class="c1"># xformedItems = np.dot(np.dot(dataMat.T, U[:, :3]), np.linalg.inv(Sig3))</span>
+    <span class="n">xformedItems</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">dataMat</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">])</span>
     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dataMat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
         <span class="n">userRating</span> <span class="o">=</span> <span class="n">dataMat</span><span class="p">[</span><span class="n">user</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">userRating</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -12272,7 +12273,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[(6, 3.332949990145984), (9, 3.331544717872839), (4, 3.331447487712862)]</pre>
+<pre>[(6, 3.3330507283671458), (9, 3.3315053278149733), (4, 3.3313983687864637)]</pre>
 </div>
 
 </div>
@@ -12305,7 +12306,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[(6, 3.3311997297614164), (9, 3.328590826556045), (4, 3.3284563489329737)]</pre>
+<pre>[(6, 3.330644816334907), (9, 3.327344778372606), (4, 3.327175498702263)]</pre>
 </div>
 
 </div>

@@ -11822,7 +11822,7 @@ div#notebook {
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Decision stump–generating functions</span>
 <span class="k">def</span> <span class="nf">stumpClassify</span><span class="p">(</span><span class="n">dataMatrix</span><span class="p">,</span> <span class="n">dimen</span><span class="p">,</span> <span class="n">threshVal</span><span class="p">,</span> <span class="n">threshIneq</span><span class="p">):</span>
-    <span class="n">retArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">dataMatrix</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">retArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">dataMatrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">threshIneq</span> <span class="o">==</span> <span class="s1">&#39;lt&#39;</span><span class="p">:</span>
         <span class="n">retArray</span><span class="p">[</span><span class="n">dataMatrix</span><span class="p">[:,</span> <span class="n">dimen</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">threshVal</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
     <span class="k">else</span><span class="p">:</span>
@@ -11837,28 +11837,27 @@ div#notebook {
 <span class="c1">#             Build a decision stump and test it with the weighted dataset</span>
 <span class="c1">#             If the error is less than minError: set this stump as the best stump</span>
 <span class="c1"># Return the best stump</span>
-<span class="k">def</span> <span class="nf">buildStump</span><span class="p">(</span><span class="n">dataArr</span><span class="p">,</span> <span class="n">classLabels</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
-    <span class="n">dataMatrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">dataArr</span><span class="p">)</span>
-    <span class="n">labelMat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">classLabels</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
-    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">dataMatrix</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">buildStump</span><span class="p">(</span><span class="n">dataMatrix</span><span class="p">,</span> <span class="n">classLabels</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
     <span class="n">numSteps</span> <span class="o">=</span> <span class="mi">10</span>
     <span class="n">bestStump</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">bestClasEst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+    <span class="n">bestClasEst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">dataMatrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">minError</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dataMatrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
         <span class="n">rangeMin</span> <span class="o">=</span> <span class="n">dataMatrix</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
         <span class="n">rangeMax</span> <span class="o">=</span> <span class="n">dataMatrix</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
         <span class="n">stepSize</span> <span class="o">=</span> <span class="p">(</span><span class="n">rangeMax</span> <span class="o">-</span> <span class="n">rangeMin</span><span class="p">)</span> <span class="o">/</span> <span class="n">numSteps</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">numSteps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">inequal</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;lt&#39;</span><span class="p">,</span> <span class="s1">&#39;gt&#39;</span><span class="p">]:</span>
                 <span class="n">threshVal</span> <span class="o">=</span> <span class="n">rangeMin</span> <span class="o">+</span> <span class="n">j</span> <span class="o">*</span> <span class="n">stepSize</span>
-                <span class="n">predictedVals</span> <span class="o">=</span> <span class="n">stumpClassify</span><span class="p">(</span><span class="n">dataMatrix</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">threshVal</span><span class="p">,</span> <span class="n">inequal</span><span class="p">)</span>
-                <span class="n">errArr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
-                <span class="n">errArr</span><span class="p">[</span><span class="n">predictedVals</span> <span class="o">==</span> <span class="n">labelMat</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">predictedVals</span> <span class="o">=</span> <span class="n">stumpClassify</span><span class="p">(</span><span class="n">dataMatrix</span><span class="p">,</span>
+                                              <span class="n">i</span><span class="p">,</span> <span class="n">threshVal</span><span class="p">,</span> <span class="n">inequal</span><span class="p">)</span>
+                <span class="n">errArr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">dataMatrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">errArr</span><span class="p">[</span><span class="n">predictedVals</span> <span class="o">==</span> <span class="n">classLabels</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
                 <span class="c1"># Calculate weighted error</span>
-                <span class="n">weightedError</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">errArr</span>
+                <span class="n">weightedError</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">errArr</span><span class="p">)</span>
                 <span class="c1"># print(&quot;split: dim %d, thresh %.2f, thresh ineqal: %s, &quot;</span>
-                <span class="c1">#      &quot;the weighted error is %.3f&quot; % (i, threshVal, inequal, weightedError))</span>
+                <span class="c1">#       &quot;the weighted error is %.3f&quot;</span>
+                <span class="c1">#       % (i, threshVal, inequal, weightedError))</span>
                 <span class="k">if</span> <span class="n">weightedError</span> <span class="o">&lt;</span> <span class="n">minError</span><span class="p">:</span>
                     <span class="n">minError</span> <span class="o">=</span> <span class="n">weightedError</span>
                     <span class="n">bestClasEst</span> <span class="o">=</span> <span class="n">predictedVals</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -11888,24 +11887,24 @@ div#notebook {
 <span class="c1"># If the error rate ==0.0 : break out of the for loop</span>
 <span class="k">def</span> <span class="nf">adaBoostTrainDS</span><span class="p">(</span><span class="n">dataArr</span><span class="p">,</span> <span class="n">classLabels</span><span class="p">,</span> <span class="n">numIt</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
     <span class="n">weakClassArr</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">dataArr</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="n">m</span><span class="p">)</span>
-    <span class="n">aggClassEst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">dataArr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">/</span> <span class="n">m</span>
+    <span class="n">aggClassEst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numIt</span><span class="p">):</span>
         <span class="n">bestStump</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">classEst</span> <span class="o">=</span> <span class="n">buildStump</span><span class="p">(</span><span class="n">dataArr</span><span class="p">,</span> <span class="n">classLabels</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
-        <span class="c1"># print(&quot;D:&quot;, D.T)</span>
-        <span class="n">alpha</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">error</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="mf">1e-16</span><span class="p">)))</span>
+        <span class="c1"># print(&quot;D:&quot;, D)</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">error</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="mf">1e-16</span><span class="p">))</span>
         <span class="n">bestStump</span><span class="p">[</span><span class="s1">&#39;alpha&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">alpha</span>
         <span class="n">weakClassArr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bestStump</span><span class="p">)</span>
-        <span class="c1"># print(&quot;classEst: &quot;, classEst.T)</span>
+        <span class="c1"># print(&quot;classEst: &quot;, classEst)</span>
         <span class="c1"># Calculate D for next iteration</span>
-        <span class="n">expon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">classLabels</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">classEst</span><span class="p">)</span>
+        <span class="n">expon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">classLabels</span><span class="p">,</span> <span class="n">classEst</span><span class="p">)</span>
         <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">expon</span><span class="p">))</span>
         <span class="n">D</span> <span class="o">=</span> <span class="n">D</span> <span class="o">/</span> <span class="n">D</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
         <span class="c1"># Aggregate error calculation</span>
         <span class="n">aggClassEst</span> <span class="o">+=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">classEst</span>
-        <span class="c1"># print(&quot;aggClassEst: &quot;, aggClassEst.T)</span>
-        <span class="n">aggErrors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">aggClassEst</span><span class="p">)</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">classLabels</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+        <span class="c1"># print(&quot;aggClassEst: &quot;, aggClassEst)</span>
+        <span class="n">aggErrors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">aggClassEst</span><span class="p">)</span> <span class="o">!=</span> <span class="n">classLabels</span>
         <span class="n">errorRate</span> <span class="o">=</span> <span class="n">aggErrors</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">m</span>
         <span class="c1"># print(&quot;total error: &quot;, errorRate)</span>
         <span class="k">if</span> <span class="n">errorRate</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
@@ -11924,10 +11923,8 @@ div#notebook {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># AdaBoost classification function</span>
-<span class="k">def</span> <span class="nf">adaClassify</span><span class="p">(</span><span class="n">datToClass</span><span class="p">,</span> <span class="n">classifierArr</span><span class="p">):</span>
-    <span class="n">dataMatrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">datToClass</span><span class="p">)</span>
-    <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">dataMatrix</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">aggClassEst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+<span class="k">def</span> <span class="nf">adaClassify</span><span class="p">(</span><span class="n">dataMatrix</span><span class="p">,</span> <span class="n">classifierArr</span><span class="p">):</span>
+    <span class="n">aggClassEst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">dataMatrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">classifierArr</span><span class="p">)):</span>
         <span class="n">classEst</span> <span class="o">=</span> <span class="n">stumpClassify</span><span class="p">(</span><span class="n">dataMatrix</span><span class="p">,</span> <span class="n">classifierArr</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;dim&#39;</span><span class="p">],</span>
                                  <span class="n">classifierArr</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;thresh&#39;</span><span class="p">],</span>
@@ -11951,13 +11948,13 @@ div#notebook {
 <span class="k">def</span> <span class="nf">plotROC</span><span class="p">(</span><span class="n">predStrengths</span><span class="p">,</span> <span class="n">classLabels</span><span class="p">):</span>
     <span class="n">cur</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
     <span class="n">ySum</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="n">numPosClas</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">classLabels</span><span class="p">)</span> <span class="o">==</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">numPosClas</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">classLabels</span> <span class="o">==</span> <span class="mf">1.0</span><span class="p">)</span>
     <span class="n">yStep</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">numPosClas</span>
     <span class="n">xStep</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">classLabels</span><span class="p">)</span> <span class="o">-</span> <span class="n">numPosClas</span><span class="p">)</span>
     <span class="c1"># Get sorted index</span>
     <span class="n">sortedIndicies</span> <span class="o">=</span> <span class="n">predStrengths</span><span class="o">.</span><span class="n">argsort</span><span class="p">()</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">sortedIndicies</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="mi">0</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">sortedIndicies</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">classLabels</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="mf">1.0</span><span class="p">:</span>
             <span class="n">delX</span><span class="p">,</span> <span class="n">delY</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">yStep</span>
         <span class="k">else</span><span class="p">:</span>
@@ -11993,12 +11990,12 @@ div#notebook {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">loadSimpData</span><span class="p">():</span>
-    <span class="n">datMat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">],</span>
-                     <span class="p">[</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">],</span>
-                     <span class="p">[</span><span class="mf">1.3</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span>
-                     <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span>
-                     <span class="p">[</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]])</span>
-    <span class="n">classLabels</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
+    <span class="n">datMat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">1.3</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]])</span>
+    <span class="n">classLabels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">datMat</span><span class="p">,</span> <span class="n">classLabels</span>
 </pre></div>
 
@@ -12057,7 +12054,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">adaClassify</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">classifierArr</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">adaClassify</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]),</span> <span class="n">classifierArr</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12076,7 +12073,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>matrix([[-1.]])</pre>
+<pre>array([-1.])</pre>
 </div>
 
 </div>
@@ -12090,7 +12087,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">adaClassify</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="n">classifierArr</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">adaClassify</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]),</span> <span class="n">classifierArr</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12109,8 +12106,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>matrix([[ 1.],
-        [-1.]])</pre>
+<pre>array([ 1., -1.])</pre>
 </div>
 
 </div>
@@ -12144,7 +12140,7 @@ div#notebook {
             <span class="n">lineArr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">curLine</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
         <span class="n">dataMat</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lineArr</span><span class="p">)</span>
         <span class="n">labelMat</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">curLine</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
-    <span class="k">return</span> <span class="n">dataMat</span><span class="p">,</span> <span class="n">labelMat</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dataMat</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">labelMat</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12173,8 +12169,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">errArr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">67</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
-<span class="n">errArr</span><span class="p">[</span><span class="n">prediction10</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">testLabelArr</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="p">(</span><span class="n">prediction10</span> <span class="o">!=</span> <span class="n">testLabelArr</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">testLabelArr</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12193,7 +12188,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>16.0</pre>
+<pre>0.23880597014925373</pre>
 </div>
 
 </div>
@@ -12228,8 +12223,8 @@ div#notebook {
 
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYoAAAEWCAYAAAB42tAoAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
-AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4xLCBo
-dHRwOi8vbWF0cGxvdGxpYi5vcmcvDW2N/gAAIABJREFUeJzt3XmYFOW1x/HvYQRRUXEhcWFxwwi4
+AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4yLCBo
+dHRwOi8vbWF0cGxvdGxpYi5vcmcvOIA7rQAAIABJREFUeJzt3XmYFOW1x/HvYQRRUXEhcWFxwwi4
 AI6gRAXjjgsqKriguBG3aNyiRm9EY0w0arwmLrhF4437CgbFREVEBQFBFAyyqDC4oYKKK8u5f7zV
 TtF0z/QMU1PdPb/P8/QzVd3V1aeqe/p0ve9bp8zdERERyadZ2gGIiEhxU6IQEZEaKVGIiEiNlChE
 RKRGShQiIlIjJQoREamREkUZs+DvZrbQzF5LKYa7zezKNF67oZiZm9lWacfREMxstJmdHE0fY2bP
