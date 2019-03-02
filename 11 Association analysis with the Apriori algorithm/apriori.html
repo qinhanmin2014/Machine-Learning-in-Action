@@ -11817,11 +11817,10 @@ div#notebook {
     <span class="n">C1</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">transaction</span> <span class="ow">in</span> <span class="n">dataSet</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">transaction</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="ow">in</span> <span class="n">C1</span><span class="p">:</span>
-                <span class="n">C1</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">item</span><span class="p">])</span>
-    <span class="n">C1</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">item</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">C1</span><span class="p">:</span>
+                <span class="n">C1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
     <span class="c1"># Create a frozenset of each item in C1</span>
-    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">frozenset</span><span class="p">,</span> <span class="n">C1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">([</span><span class="n">x</span><span class="p">]),</span> <span class="n">C1</span><span class="p">))</span>
 
 
 <span class="k">def</span> <span class="nf">scanD</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">Ck</span><span class="p">,</span> <span class="n">minSupport</span><span class="p">):</span>
@@ -11840,7 +11839,7 @@ div#notebook {
     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">ssCnt</span><span class="p">:</span>
         <span class="n">support</span> <span class="o">=</span> <span class="n">ssCnt</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">/</span> <span class="n">numItems</span>
         <span class="k">if</span> <span class="n">support</span> <span class="o">&gt;=</span> <span class="n">minSupport</span><span class="p">:</span>
-            <span class="n">retList</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+            <span class="n">retList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="n">supportData</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">support</span>
     <span class="k">return</span> <span class="n">retList</span><span class="p">,</span> <span class="n">supportData</span>
 </pre></div>
@@ -11866,11 +11865,9 @@ div#notebook {
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">lenLk</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">lenLk</span><span class="p">):</span>
             <span class="c1"># Join sets if first k-2 items are equal</span>
-            <span class="n">L1</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Lk</span><span class="p">[</span><span class="n">i</span><span class="p">])[:</span><span class="n">k</span> <span class="o">-</span> <span class="mi">2</span><span class="p">]</span>
-            <span class="n">L2</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Lk</span><span class="p">[</span><span class="n">j</span><span class="p">])[:</span><span class="n">k</span> <span class="o">-</span> <span class="mi">2</span><span class="p">]</span>
-            <span class="n">L1</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-            <span class="n">L2</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">L1</span> <span class="o">==</span> <span class="n">L2</span><span class="p">:</span>
+            <span class="n">L1</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">Lk</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+            <span class="n">L2</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">Lk</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span>
+            <span class="k">if</span> <span class="n">L1</span><span class="p">[:</span><span class="n">k</span> <span class="o">-</span> <span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">L2</span><span class="p">[:</span><span class="n">k</span> <span class="o">-</span> <span class="mi">2</span><span class="p">]:</span>
                 <span class="n">retList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Lk</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">|</span> <span class="n">Lk</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">retList</span>
 
@@ -11908,10 +11905,9 @@ div#notebook {
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">L</span><span class="p">)):</span>
         <span class="k">for</span> <span class="n">freqSet</span> <span class="ow">in</span> <span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
             <span class="n">H1</span> <span class="o">=</span> <span class="p">[</span><span class="nb">frozenset</span><span class="p">([</span><span class="n">item</span><span class="p">])</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">freqSet</span><span class="p">]</span>
+            <span class="n">calcConf</span><span class="p">(</span><span class="n">freqSet</span><span class="p">,</span> <span class="n">H1</span><span class="p">,</span> <span class="n">supportData</span><span class="p">,</span> <span class="n">bigRuleList</span><span class="p">,</span> <span class="n">minConf</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">rulesFromConseq</span><span class="p">(</span><span class="n">freqSet</span><span class="p">,</span> <span class="n">H1</span><span class="p">,</span> <span class="n">supportData</span><span class="p">,</span> <span class="n">bigRuleList</span><span class="p">,</span> <span class="n">minConf</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">calcConf</span><span class="p">(</span><span class="n">freqSet</span><span class="p">,</span> <span class="n">H1</span><span class="p">,</span> <span class="n">supportData</span><span class="p">,</span> <span class="n">bigRuleList</span><span class="p">,</span> <span class="n">minConf</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">bigRuleList</span>
 
 
@@ -12014,8 +12010,8 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[[frozenset({5}), frozenset({2}), frozenset({3}), frozenset({1})],
- [frozenset({2, 3}), frozenset({3, 5}), frozenset({2, 5}), frozenset({1, 3})],
+<pre>[[frozenset({1}), frozenset({3}), frozenset({2}), frozenset({5})],
+ [frozenset({1, 3}), frozenset({2, 3}), frozenset({3, 5}), frozenset({2, 5})],
  [frozenset({2, 3, 5})],
  []]</pre>
 </div>
@@ -12063,7 +12059,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[[frozenset({5}), frozenset({2}), frozenset({3})], [frozenset({2, 5})], []]</pre>
+<pre>[[frozenset({3}), frozenset({2}), frozenset({5})], [frozenset({2, 5})], []]</pre>
 </div>
 
 </div>
@@ -12107,9 +12103,11 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>frozenset({5}) --&gt; frozenset({2}) conf: 1.0
+<pre>frozenset({1}) --&gt; frozenset({3}) conf: 1.0
+frozenset({5}) --&gt; frozenset({2}) conf: 1.0
 frozenset({2}) --&gt; frozenset({5}) conf: 1.0
-frozenset({1}) --&gt; frozenset({3}) conf: 1.0
+frozenset({3, 5}) --&gt; frozenset({2}) conf: 1.0
+frozenset({2, 3}) --&gt; frozenset({5}) conf: 1.0
 </pre>
 </div>
 </div>
@@ -12140,14 +12138,17 @@ frozenset({1}) --&gt; frozenset({3}) conf: 1.0
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>frozenset({3}) --&gt; frozenset({2}) conf: 0.6666666666666666
+<pre>frozenset({3}) --&gt; frozenset({1}) conf: 0.6666666666666666
+frozenset({1}) --&gt; frozenset({3}) conf: 1.0
+frozenset({3}) --&gt; frozenset({2}) conf: 0.6666666666666666
 frozenset({2}) --&gt; frozenset({3}) conf: 0.6666666666666666
 frozenset({5}) --&gt; frozenset({3}) conf: 0.6666666666666666
 frozenset({3}) --&gt; frozenset({5}) conf: 0.6666666666666666
 frozenset({5}) --&gt; frozenset({2}) conf: 1.0
 frozenset({2}) --&gt; frozenset({5}) conf: 1.0
-frozenset({3}) --&gt; frozenset({1}) conf: 0.6666666666666666
-frozenset({1}) --&gt; frozenset({3}) conf: 1.0
+frozenset({3, 5}) --&gt; frozenset({2}) conf: 1.0
+frozenset({2, 5}) --&gt; frozenset({3}) conf: 0.6666666666666666
+frozenset({2, 3}) --&gt; frozenset({5}) conf: 1.0
 frozenset({5}) --&gt; frozenset({2, 3}) conf: 0.6666666666666666
 frozenset({3}) --&gt; frozenset({2, 5}) conf: 0.6666666666666666
 frozenset({2}) --&gt; frozenset({3, 5}) conf: 0.6666666666666666
@@ -12205,7 +12206,7 @@ frozenset({2}) --&gt; frozenset({3, 5}) conf: 0.6666666666666666
 <div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">L</span><span class="p">,</span> <span class="n">suppData</span> <span class="o">=</span> <span class="n">apriori</span><span class="p">(</span><span class="n">dataSet</span><span class="p">,</span> <span class="n">minSupport</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">L</span><span class="p">,</span> <span class="n">suppData</span> <span class="o">=</span> <span class="n">apriori</span><span class="p">(</span><span class="n">dataSet</span><span class="p">,</span> <span class="n">minSupport</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12237,37 +12238,12 @@ frozenset({2}) --&gt; frozenset({3, 5}) conf: 0.6666666666666666
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>frozenset({3}) --&gt; frozenset({0}) conf: 0.9956140350877194
 frozenset({3}) --&gt; frozenset({9}) conf: 1.0
+frozenset({0, 7}) --&gt; frozenset({9}) conf: 1.0
+frozenset({0, 23}) --&gt; frozenset({9}) conf: 1.0
+frozenset({7, 23}) --&gt; frozenset({9}) conf: 0.9956140350877194
+frozenset({9, 3}) --&gt; frozenset({0}) conf: 0.9956140350877194
+frozenset({0, 3}) --&gt; frozenset({9}) conf: 1.0
 frozenset({3}) --&gt; frozenset({0, 9}) conf: 0.9956140350877194
-frozenset({3, 7}) --&gt; frozenset({0, 9}) conf: 0.9954954954954954
-frozenset({3, 23}) --&gt; frozenset({0, 9}) conf: 0.9954545454545454
-frozenset({25, 3}) --&gt; frozenset({0, 9}) conf: 0.9953488372093025
-frozenset({26, 3}) --&gt; frozenset({0, 9}) conf: 1.0
-frozenset({3, 4}) --&gt; frozenset({0, 9}) conf: 0.9953488372093025
-frozenset({26, 3, 4}) --&gt; frozenset({0, 9}) conf: 1.0
-frozenset({25, 3, 4}) --&gt; frozenset({0, 9}) conf: 0.9950495049504952
-frozenset({3, 4, 23}) --&gt; frozenset({0, 9}) conf: 0.9951923076923077
-frozenset({25, 26, 3}) --&gt; frozenset({0, 9}) conf: 1.0
-frozenset({26, 3, 23}) --&gt; frozenset({0, 9}) conf: 1.0
-frozenset({25, 3, 23}) --&gt; frozenset({0, 9}) conf: 0.9951690821256038
-frozenset({26, 3, 7}) --&gt; frozenset({0, 9}) conf: 1.0
-frozenset({25, 3, 7}) --&gt; frozenset({0, 9}) conf: 0.9952153110047847
-frozenset({3, 23, 7}) --&gt; frozenset({0, 9}) conf: 0.9953488372093025
-frozenset({3, 4, 7}) --&gt; frozenset({0, 9}) conf: 0.9952380952380953
-frozenset({3, 4, 23, 7}) --&gt; frozenset({0, 9}) conf: 0.9950980392156863
-frozenset({25, 3, 4, 7}) --&gt; frozenset({0, 9}) conf: 0.9949238578680204
-frozenset({26, 3, 4, 7}) --&gt; frozenset({0, 9}) conf: 1.0
-frozenset({25, 3, 23, 7}) --&gt; frozenset({0, 9}) conf: 0.9950495049504952
-frozenset({26, 3, 23, 7}) --&gt; frozenset({0, 9}) conf: 1.0
-frozenset({25, 26, 3, 7}) --&gt; frozenset({0, 9}) conf: 1.0
-frozenset({25, 26, 3, 23}) --&gt; frozenset({0, 9}) conf: 1.0
-frozenset({25, 3, 4, 23}) --&gt; frozenset({0, 9}) conf: 0.9948717948717949
-frozenset({26, 3, 4, 23}) --&gt; frozenset({0, 9}) conf: 1.0
-frozenset({25, 26, 3, 4}) --&gt; frozenset({0, 9}) conf: 1.0
-frozenset({3, 4, 23, 25, 26}) --&gt; frozenset({0, 9}) conf: 1.0
-frozenset({3, 7, 23, 25, 26}) --&gt; frozenset({0, 9}) conf: 1.0
-frozenset({3, 4, 7, 25, 26}) --&gt; frozenset({0, 9}) conf: 1.0
-frozenset({3, 4, 7, 23, 26}) --&gt; frozenset({0, 9}) conf: 1.0
-frozenset({3, 4, 7, 23, 25}) --&gt; frozenset({0, 9}) conf: 0.9947643979057591
 </pre>
 </div>
 </div>
@@ -12329,11 +12305,11 @@ Prohibiting Federal Funding of National Public Radio -- Yea
 Repealing the Health Care Bill -- Yea
 confidence: 1.000000
 
-Prohibiting Federal Funding of National Public Radio -- Yea
-           --------&gt;
 Republican
+Terminating the Home Affordable Modification Program -- Yea
+           --------&gt;
 Repealing the Health Care Bill -- Yea
-confidence: 0.995614
+confidence: 1.000000
 
 </pre>
 </div>
@@ -12393,11 +12369,11 @@ confidence: 0.995614
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>frozenset({&#39;2&#39;, &#39;28&#39;})
-frozenset({&#39;2&#39;, &#39;53&#39;})
-frozenset({&#39;2&#39;, &#39;23&#39;})
+<pre>frozenset({&#39;2&#39;, &#39;23&#39;})
 frozenset({&#39;2&#39;, &#39;34&#39;})
 frozenset({&#39;2&#39;, &#39;36&#39;})
+frozenset({&#39;2&#39;, &#39;59&#39;})
+frozenset({&#39;2&#39;, &#39;63&#39;})
 </pre>
 </div>
 </div>
@@ -12434,11 +12410,11 @@ frozenset({&#39;2&#39;, &#39;36&#39;})
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>frozenset({&#39;34&#39;, &#39;28&#39;, &#39;63&#39;, &#39;2&#39;})
-frozenset({&#39;86&#39;, &#39;34&#39;, &#39;28&#39;, &#39;2&#39;})
-frozenset({&#39;34&#39;, &#39;28&#39;, &#39;2&#39;, &#39;59&#39;})
-frozenset({&#39;28&#39;, &#39;63&#39;, &#39;2&#39;, &#39;59&#39;})
-frozenset({&#39;86&#39;, &#39;28&#39;, &#39;2&#39;, &#39;59&#39;})
+<pre>frozenset({&#39;2&#39;, &#39;23&#39;, &#39;34&#39;, &#39;36&#39;})
+frozenset({&#39;2&#39;, &#39;23&#39;, &#39;59&#39;, &#39;34&#39;})
+frozenset({&#39;2&#39;, &#39;23&#39;, &#39;34&#39;, &#39;63&#39;})
+frozenset({&#39;2&#39;, &#39;23&#39;, &#39;85&#39;, &#39;34&#39;})
+frozenset({&#39;2&#39;, &#39;23&#39;, &#39;34&#39;, &#39;86&#39;})
 </pre>
 </div>
 </div>
