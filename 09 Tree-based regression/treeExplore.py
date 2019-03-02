@@ -21,8 +21,7 @@ def reDraw(tolS, tolN):
     else:
         myTree = regTrees.createTree(reDraw.rawDat, ops=(tolS, tolN))
         yHat = regTrees.createForeCast(myTree, reDraw.testDat)
-    reDraw.a.scatter(reDraw.rawDat[:, 0].T.tolist()[0],
-                     reDraw.rawDat[:, 1].T.tolist()[0], c="black", s=5)
+    reDraw.a.scatter(reDraw.rawDat[:, 0], reDraw.rawDat[:, 1], c="black", s=5)
     reDraw.a.plot(reDraw.testDat, yHat, linewidth=2.0)
     reDraw.canvas.draw()
 
@@ -71,9 +70,9 @@ chkBtnVar = tkinter.IntVar()
 chkBtn = tkinter.Checkbutton(root, text="Model Tree", variable=chkBtnVar)
 chkBtn.grid(row=3, column=0, columnspan=2)
 
-reDraw.rawDat = np.mat(regTrees.loadDataSet('sine.txt'))
+reDraw.rawDat = regTrees.loadDataSet('sine.txt')
 reDraw.testDat = np.arange(min(reDraw.rawDat[:, 0]),
-                           max(reDraw.rawDat[:, 0]), 0.01)
+                           max(reDraw.rawDat[:, 0]), 0.01)[:, np.newaxis]
 reDraw(1.0, 10)
 
 root.mainloop()

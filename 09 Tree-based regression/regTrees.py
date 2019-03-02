@@ -20,7 +20,7 @@ def regLeaf(dataSet):
 
 
 def regErr(dataSet):
-    return np.var(dataSet[:, -1]) * np.shape(dataSet)[0]
+    return np.var(dataSet[:, -1]) * dataSet.shape[0]
 
 
 def chooseBestSplit(dataSet, leafType=regLeaf, errType=regErr, ops=(1, 4)):
@@ -28,15 +28,15 @@ def chooseBestSplit(dataSet, leafType=regLeaf, errType=regErr, ops=(1, 4)):
     # when to quit creating new splits
     tolS, tolN = ops[0], ops[1]
     # Exit if all values are equal
-    if len(set(dataSet[:, -1].T.tolist()[0])) == 1:
+    if len(set(dataSet[:, -1])) == 1:
         return None, leafType(dataSet)
-    m, n = np.shape(dataSet)
+    m, n = dataSet.shape
     S = errType(dataSet)
     bestS, bestIndex, bestValue = np.inf, 0, 0
     for featIndex in range(n - 1):
-        for splitVal in set(dataSet[:, featIndex].T.tolist()[0]):
+        for splitVal in set(dataSet[:, featIndex]):
             mat0, mat1 = binSplitDataSet(dataSet, featIndex, splitVal)
-            if np.shape(mat0)[0] < tolN or np.shape(mat1)[0] < tolN:
+            if mat0.shape[0] < tolN or mat1.shape[0] < tolN:
                 continue
             newS = errType(mat0) + errType(mat1)
             if newS < bestS:
@@ -44,11 +44,7 @@ def chooseBestSplit(dataSet, leafType=regLeaf, errType=regErr, ops=(1, 4)):
                 bestValue = splitVal
                 bestS = newS
     # Exit if low error reduction
-    if (S - bestS) < tolS:
-        return None, leafType(dataSet)
-    mat0, mat1 = binSplitDataSet(dataSet, bestIndex, bestValue)
-    # Exit if split creates small dataset
-    if np.shape(mat0)[0] < tolN or np.shape(mat1)[0] < tolN:
+    if S - bestS < tolS:
         return None, leafType(dataSet)
     return bestIndex, bestValue
 
@@ -93,7 +89,7 @@ def getMean(tree):
 
 def prune(tree, testData):
     # Collapse tree if no test data
-    if np.shape(testData)[0] == 0:
+    if testData.shape[0] == 0:
         return getMean(tree)
     if isTree(tree['right']) or isTree(tree['left']):
         lSet, rSet = binSplitDataSet(testData, tree['spInd'], tree['spVal'])
@@ -118,17 +114,17 @@ def prune(tree, testData):
 
 # Leaf-generation function for model trees
 def linearSolve(dataSet):
-    m, n = np.shape(dataSet)
+    m, n = dataSet.shape
     # Format data in X and Y
-    X = np.mat(np.ones((m, n)))
-    Y = np.mat(np.ones((m, 1)))
+    X = np.ones((m, n))
     X[:, 1: n] = dataSet[:, 0: n - 1]
     Y = dataSet[:, -1]
-    xTx = X.T * X
+    xTx = np.dot(X.T, X)
     if np.linalg.det(xTx) == 0.0:
         raise NameError("This matrix is singular, cannot do inverse,\n"
                         "try increasing the second value of ops")
-    ws = xTx.I * (X.T * Y)
+    ws = np.dot(np.linalg.inv(xTx),
+                np.dot(X.T, Y[:, np.newaxis])).ravel()
     return ws, X, Y
 
 
@@ -139,7 +135,7 @@ def modelLeaf(dataSet):
 
 def modelErr(dataSet):
     ws, X, Y = linearSolve(dataSet)
-    yHat = X * ws
+    yHat = np.dot(X, ws)
     return sum(np.power(Y - yHat, 2))
 
 
@@ -149,10 +145,9 @@ def regTreeEval(model, inDat):
 
 
 def modelTreeEval(model, inDat):
-    n = np.shape(inDat)[1]
-    X = np.mat(np.ones((1, n + 1)))
-    X[:, 1: n + 1] = inDat
-    return float(X * model)
+    X = np.ones(len(inDat) + 1)
+    X[1:] = inDat
+    return float(np.dot(X, model))
 
 
 def treeForeCast(tree, inData, modelEval=regTreeEval):
@@ -172,9 +167,9 @@ def treeForeCast(tree, inData, modelEval=regTreeEval):
 
 def createForeCast(tree, testData, modelEval=regTreeEval):
     m = len(testData)
-    yHat = np.mat(np.zeros((m, 1)))
+    yHat = np.zeros(m)
     for i in range(m):
-        yHat[i, 0] = treeForeCast(tree, np.mat(testData[i]), modelEval)
+        yHat[i] = treeForeCast(tree, testData[i], modelEval)
     return yHat
 
 
@@ -186,4 +181,4 @@ def loadDataSet(fileName):
         # Map everything to float()
         fltLine = list(map(float, curLine))
         dataMat.append(fltLine)
-    return dataMat
+    return np.array(dataMat)

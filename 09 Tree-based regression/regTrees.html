@@ -11857,7 +11857,7 @@ div#notebook {
 
 
 <span class="k">def</span> <span class="nf">regErr</span><span class="p">(</span><span class="n">dataSet</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">dataSet</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">dataSet</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">dataSet</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">dataSet</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
 
 <span class="k">def</span> <span class="nf">chooseBestSplit</span><span class="p">(</span><span class="n">dataSet</span><span class="p">,</span> <span class="n">leafType</span><span class="o">=</span><span class="n">regLeaf</span><span class="p">,</span> <span class="n">errType</span><span class="o">=</span><span class="n">regErr</span><span class="p">,</span> <span class="n">ops</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)):</span>
@@ -11865,15 +11865,15 @@ div#notebook {
     <span class="c1"># when to quit creating new splits</span>
     <span class="n">tolS</span><span class="p">,</span> <span class="n">tolN</span> <span class="o">=</span> <span class="n">ops</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ops</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="c1"># Exit if all values are equal</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">dataSet</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">dataSet</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">leafType</span><span class="p">(</span><span class="n">dataSet</span><span class="p">)</span>
-    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">dataSet</span><span class="p">)</span>
+    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">dataSet</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">S</span> <span class="o">=</span> <span class="n">errType</span><span class="p">(</span><span class="n">dataSet</span><span class="p">)</span>
     <span class="n">bestS</span><span class="p">,</span> <span class="n">bestIndex</span><span class="p">,</span> <span class="n">bestValue</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">featIndex</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">splitVal</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">dataSet</span><span class="p">[:,</span> <span class="n">featIndex</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">splitVal</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">dataSet</span><span class="p">[:,</span> <span class="n">featIndex</span><span class="p">]):</span>
             <span class="n">mat0</span><span class="p">,</span> <span class="n">mat1</span> <span class="o">=</span> <span class="n">binSplitDataSet</span><span class="p">(</span><span class="n">dataSet</span><span class="p">,</span> <span class="n">featIndex</span><span class="p">,</span> <span class="n">splitVal</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">mat0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">tolN</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">mat1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">tolN</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">mat0</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">tolN</span> <span class="ow">or</span> <span class="n">mat1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">tolN</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">newS</span> <span class="o">=</span> <span class="n">errType</span><span class="p">(</span><span class="n">mat0</span><span class="p">)</span> <span class="o">+</span> <span class="n">errType</span><span class="p">(</span><span class="n">mat1</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">newS</span> <span class="o">&lt;</span> <span class="n">bestS</span><span class="p">:</span>
@@ -11881,11 +11881,7 @@ div#notebook {
                 <span class="n">bestValue</span> <span class="o">=</span> <span class="n">splitVal</span>
                 <span class="n">bestS</span> <span class="o">=</span> <span class="n">newS</span>
     <span class="c1"># Exit if low error reduction</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">S</span> <span class="o">-</span> <span class="n">bestS</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tolS</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">leafType</span><span class="p">(</span><span class="n">dataSet</span><span class="p">)</span>
-    <span class="n">mat0</span><span class="p">,</span> <span class="n">mat1</span> <span class="o">=</span> <span class="n">binSplitDataSet</span><span class="p">(</span><span class="n">dataSet</span><span class="p">,</span> <span class="n">bestIndex</span><span class="p">,</span> <span class="n">bestValue</span><span class="p">)</span>
-    <span class="c1"># Exit if split creates small dataset</span>
-    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">mat0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">tolN</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">mat1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">tolN</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">S</span> <span class="o">-</span> <span class="n">bestS</span> <span class="o">&lt;</span> <span class="n">tolS</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">leafType</span><span class="p">(</span><span class="n">dataSet</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">bestIndex</span><span class="p">,</span> <span class="n">bestValue</span>
 </pre></div>
@@ -11950,7 +11946,7 @@ div#notebook {
 
 <span class="k">def</span> <span class="nf">prune</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">testData</span><span class="p">):</span>
     <span class="c1"># Collapse tree if no test data</span>
-    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">testData</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">testData</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">getMean</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">isTree</span><span class="p">(</span><span class="n">tree</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">])</span> <span class="ow">or</span> <span class="n">isTree</span><span class="p">(</span><span class="n">tree</span><span class="p">[</span><span class="s1">&#39;left&#39;</span><span class="p">]):</span>
         <span class="n">lSet</span><span class="p">,</span> <span class="n">rSet</span> <span class="o">=</span> <span class="n">binSplitDataSet</span><span class="p">(</span><span class="n">testData</span><span class="p">,</span> <span class="n">tree</span><span class="p">[</span><span class="s1">&#39;spInd&#39;</span><span class="p">],</span> <span class="n">tree</span><span class="p">[</span><span class="s1">&#39;spVal&#39;</span><span class="p">])</span>
@@ -11985,17 +11981,17 @@ div#notebook {
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Leaf-generation function for model trees</span>
 <span class="k">def</span> <span class="nf">linearSolve</span><span class="p">(</span><span class="n">dataSet</span><span class="p">):</span>
-    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">dataSet</span><span class="p">)</span>
+    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">dataSet</span><span class="o">.</span><span class="n">shape</span>
     <span class="c1"># Format data in X and Y</span>
-    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)))</span>
-    <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
     <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataSet</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
     <span class="n">Y</span> <span class="o">=</span> <span class="n">dataSet</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">xTx</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">X</span>
+    <span class="n">xTx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">xTx</span><span class="p">)</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s2">&quot;This matrix is singular, cannot do inverse,</span><span class="se">\n</span><span class="s2">&quot;</span>
                         <span class="s2">&quot;try increasing the second value of ops&quot;</span><span class="p">)</span>
-    <span class="n">ws</span> <span class="o">=</span> <span class="n">xTx</span><span class="o">.</span><span class="n">I</span> <span class="o">*</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">Y</span><span class="p">)</span>
+    <span class="n">ws</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">xTx</span><span class="p">),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">Y</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]))</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">ws</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span>
 
 
@@ -12006,7 +12002,7 @@ div#notebook {
 
 <span class="k">def</span> <span class="nf">modelErr</span><span class="p">(</span><span class="n">dataSet</span><span class="p">):</span>
     <span class="n">ws</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">linearSolve</span><span class="p">(</span><span class="n">dataSet</span><span class="p">)</span>
-    <span class="n">yHat</span> <span class="o">=</span> <span class="n">X</span> <span class="o">*</span> <span class="n">ws</span>
+    <span class="n">yHat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">ws</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">Y</span> <span class="o">-</span> <span class="n">yHat</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 
@@ -12026,10 +12022,9 @@ div#notebook {
 
 
 <span class="k">def</span> <span class="nf">modelTreeEval</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">inDat</span><span class="p">):</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">inDat</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
-    <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">inDat</span>
-    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">X</span> <span class="o">*</span> <span class="n">model</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">inDat</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">inDat</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">model</span><span class="p">))</span>
 
 
 <span class="k">def</span> <span class="nf">treeForeCast</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">inData</span><span class="p">,</span> <span class="n">modelEval</span><span class="o">=</span><span class="n">regTreeEval</span><span class="p">):</span>
@@ -12049,9 +12044,9 @@ div#notebook {
 
 <span class="k">def</span> <span class="nf">createForeCast</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">testData</span><span class="p">,</span> <span class="n">modelEval</span><span class="o">=</span><span class="n">regTreeEval</span><span class="p">):</span>
     <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">testData</span><span class="p">)</span>
-    <span class="n">yHat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+    <span class="n">yHat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
-        <span class="n">yHat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">treeForeCast</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">testData</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">modelEval</span><span class="p">)</span>
+        <span class="n">yHat</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">treeForeCast</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">testData</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">modelEval</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">yHat</span>
 </pre></div>
 
@@ -12081,7 +12076,7 @@ div#notebook {
         <span class="c1"># Map everything to float()</span>
         <span class="n">fltLine</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">curLine</span><span class="p">))</span>
         <span class="n">dataMat</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fltLine</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">dataMat</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dataMat</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12094,8 +12089,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">myDat</span> <span class="o">=</span> <span class="n">loadDataSet</span><span class="p">(</span><span class="s1">&#39;ex00.txt&#39;</span><span class="p">)</span>
-<span class="n">myMat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">myDat</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">myMat</span> <span class="o">=</span> <span class="n">loadDataSet</span><span class="p">(</span><span class="s1">&#39;ex00.txt&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12109,7 +12103,7 @@ div#notebook {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">myMat</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="n">myMat</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">A</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">myMat</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">myMat</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -12130,8 +12124,8 @@ div#notebook {
 
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAX8AAAD8CAYAAACfF6SlAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
-AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4xLCBo
-dHRwOi8vbWF0cGxvdGxpYi5vcmcvDW2N/gAAIABJREFUeJzt3X+MHOd5H/Dvw+NKXEopTw6ZRlpL
+AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4yLCBo
+dHRwOi8vbWF0cGxvdGxpYi5vcmcvOIA7rQAAIABJREFUeJzt3X+MHOd5H/Dvw+NKXEopTw6ZRlpL
 ItMqVCKrIqODbINAa9Gx6VoxdYgUS06NWIETIU7dwqpB9IwEEeUa8LVEoKS1UZdpBNuJKtOWggtV
 OmCQUIEDxlR1zJGWqZooI1kUl0ZFWzoWEk/y8vj0j9s9zc2+78w7M+/82vl+AEH3Y3bnnSX5zDvP
 +77PK6oKIiJqllVlN4CIiIrH4E9E1EAM/kREDcTgT0TUQAz+REQNxOBPRNRADP5ERA3E4E9E1EAM
@@ -12349,8 +12343,7 @@ DP5ERA3E4E9E1EAM/kREDcTgT0TUQAz+REQN9P8BpDlconLeKisAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">myDat1</span> <span class="o">=</span> <span class="n">loadDataSet</span><span class="p">(</span><span class="s1">&#39;ex0.txt&#39;</span><span class="p">)</span>
-<span class="n">myMat1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">myDat1</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">myMat1</span> <span class="o">=</span> <span class="n">loadDataSet</span><span class="p">(</span><span class="s1">&#39;ex0.txt&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12365,7 +12358,7 @@ DP5ERA3E4E9E1EAM/kREDcTgT0TUQAz+REQN9P8BpDlconLeKisAAAAASUVORK5CYII=
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Feature 0 is constant</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">myMat1</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="n">myMat1</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">A</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">myMat1</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">myMat1</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -12386,8 +12379,8 @@ DP5ERA3E4E9E1EAM/kREDcTgT0TUQAz+REQN9P8BpDlconLeKisAAAAASUVORK5CYII=
 
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAW4AAAD8CAYAAABXe05zAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
-AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4xLCBo
-dHRwOi8vbWF0cGxvdGxpYi5vcmcvDW2N/gAAIABJREFUeJzt3X9sHOd5J/Dvw9VKWiaNVqlZwF5b
+AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4yLCBo
+dHRwOi8vbWF0cGxvdGxpYi5vcmcvOIA7rQAAIABJREFUeJzt3X9sHOd5J/Dvw9VKWiaNVqlZwF5b
 kRukVq3oLMZErILAtVKL2JV/hIjTOr647QFBjfYORe0aPMiIAck5H0xUaJ07NEBrpEF/2HUl2ykr
 xz4odycZuaqVW+pIRlEjHeIklr0OziysVVtzLa2Wz/2xHGo4O+/MO7MzszPL7wcQQC73xzui9Oy7
 z/u8zyuqCiIiKo6hfg+AiIiiYeAmIioYBm4iooJh4CYiKhgGbiKigmHgJiIqGAZuIqKCYeAmIioY
@@ -12608,8 +12601,7 @@ xBhZVIsZ7wAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">myDat2</span> <span class="o">=</span> <span class="n">loadDataSet</span><span class="p">(</span><span class="s1">&#39;ex2.txt&#39;</span><span class="p">)</span>
-<span class="n">myMat2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">myDat2</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">myMat2</span> <span class="o">=</span> <span class="n">loadDataSet</span><span class="p">(</span><span class="s1">&#39;ex2.txt&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12623,7 +12615,7 @@ xBhZVIsZ7wAAAABJRU5ErkJggg==
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">myMat2</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="n">myMat2</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">A</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">myMat2</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">myMat2</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -12644,8 +12636,8 @@ xBhZVIsZ7wAAAABJRU5ErkJggg==
 
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXwAAAD8CAYAAAB0IB+mAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
-AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4xLCBo
-dHRwOi8vbWF0cGxvdGxpYi5vcmcvDW2N/gAAIABJREFUeJzt3X9sHOd5J/DvQ2plL5OcqJyUwGac
+AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4yLCBo
+dHRwOi8vbWF0cGxvdGxpYi5vcmcvOIA7rQAAIABJREFUeJzt3X9sHOd5J/DvQ2plL5OcqJyUwGac
 SFc48sUJLMWEm4OAO8vpWY6N2Goc1+61qFsEddEmB8RXEKBxQC0lf4QoL1CvQC+tchckd9c6sq2U
 kWK3TGu5yMGo05CglFg+E6fGv7QyYrYWhVZcy0vyuT92Z7U7nHfmnd8zO98PIIhczu78oPTMO8/7
 vs8rqgoiIhp8Q3kfABERZYMBn4ioIhjwiYgqggGfiKgiGPCJiCqCAZ+IqCIY8ImIKoIBn4ioIhjw
@@ -12866,8 +12858,7 @@ IqKKYMAnIqoIBnwioopgwCciqggGfCKiimDAJyKqiP8PAvhE5DhbH6sAAAAASUVORK5CYII=
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">myTree</span> <span class="o">=</span> <span class="n">createTree</span><span class="p">(</span><span class="n">myMat2</span><span class="p">,</span> <span class="n">ops</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">myDatTest</span> <span class="o">=</span> <span class="n">loadDataSet</span><span class="p">(</span><span class="s1">&#39;ex2test.txt&#39;</span><span class="p">)</span>
-<span class="n">myMat2Test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">myDatTest</span><span class="p">)</span>
+<span class="n">myMat2Test</span> <span class="o">=</span> <span class="n">loadDataSet</span><span class="p">(</span><span class="s1">&#39;ex2test.txt&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">prune</span><span class="p">(</span><span class="n">myTree</span><span class="p">,</span> <span class="n">myMat2Test</span><span class="p">))</span>
 </pre></div>
 
@@ -12918,7 +12909,7 @@ merging
 <div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">myMat2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">loadDataSet</span><span class="p">(</span><span class="s1">&#39;exp2.txt&#39;</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">myMat2</span> <span class="o">=</span> <span class="n">loadDataSet</span><span class="p">(</span><span class="s1">&#39;exp2.txt&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12932,7 +12923,7 @@ merging
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">myMat2</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="n">myMat2</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">A</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">myMat2</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">myMat2</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -12953,8 +12944,8 @@ merging
 
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXQAAAD8CAYAAABn919SAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
-AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4xLCBo
-dHRwOi8vbWF0cGxvdGxpYi5vcmcvDW2N/gAAGj5JREFUeJzt3X+M2/d93/HX+6ivYp4ah0p8GSom
+AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4yLCBo
+dHRwOi8vbWF0cGxvdGxpYi5vcmcvOIA7rQAAGj5JREFUeJzt3X+M2/d93/HX+6ivYp4ah0p8GSom
 ipI2VRZZjZQdVm0G2tgubCOObUV17Hg2lrZujbZAtmSdVgnxKrlzIGFqardogc5Ls3S15ylxFFZO
 uylZ7CCFEKk9lVIuSq02zQ/ZlFeriM7AfExEn977g+SJR/HHl+SXX/L75fMBCL7jfXn8fH2nFz96
 f36ZuwsAkHxTo24AACAaBDoApASBDgApQaADQEoQ6ACQEgQ6AKQEgQ4AKUGgA0BKEOgAkBKr4nyx
@@ -13107,9 +13098,10 @@ gQ4AKUGgA0BKEOgAkBIEOgCkxP8HuPW7Cotwad8AAAAASUVORK5CYII=
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>{&#39;left&#39;: matrix([[1.69855694e-03],
-         [1.19647739e+01]]), &#39;right&#39;: matrix([[3.46877936],
-         [1.18521743]]), &#39;spInd&#39;: 0, &#39;spVal&#39;: 0.285477}</pre>
+<pre>{&#39;left&#39;: array([1.69855694e-03, 1.19647739e+01]),
+ &#39;right&#39;: array([3.46877936, 1.18521743]),
+ &#39;spInd&#39;: 0,
+ &#39;spVal&#39;: 0.285477}</pre>
 </div>
 
 </div>
@@ -13131,8 +13123,8 @@ gQ4AKUGgA0BKEOgAkBIEOgCkxP8HuPW7Cotwad8AAAAASUVORK5CYII=
 <div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">trainMat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">loadDataSet</span><span class="p">(</span><span class="s1">&#39;bikeSpeedVsIq_train.txt&#39;</span><span class="p">))</span>
-<span class="n">testMat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">(</span><span class="n">loadDataSet</span><span class="p">(</span><span class="s1">&#39;bikeSpeedVsIq_test.txt&#39;</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">trainMat</span> <span class="o">=</span> <span class="n">loadDataSet</span><span class="p">(</span><span class="s1">&#39;bikeSpeedVsIq_train.txt&#39;</span><span class="p">)</span>
+<span class="n">testMat</span> <span class="o">=</span> <span class="n">loadDataSet</span><span class="p">(</span><span class="s1">&#39;bikeSpeedVsIq_test.txt&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -13146,7 +13138,7 @@ gQ4AKUGgA0BKEOgAkBIEOgCkxP8HuPW7Cotwad8AAAAASUVORK5CYII=
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">trainMat</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="n">trainMat</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">A</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">trainMat</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">trainMat</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -13167,8 +13159,8 @@ gQ4AKUGgA0BKEOgAkBIEOgCkxP8HuPW7Cotwad8AAAAASUVORK5CYII=
 
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXoAAAD8CAYAAAB5Pm/hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
-AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4xLCBo
-dHRwOi8vbWF0cGxvdGxpYi5vcmcvDW2N/gAAIABJREFUeJzt3X+U3XWd3/HnO8OoE7tmYAkKkwxB
+AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4yLCBo
+dHRwOi8vbWF0cGxvdGxpYi5vcmcvOIA7rQAAIABJREFUeJzt3X+U3XWd3/HnO8OoE7tmYAkKkwxB
 TzauECBkFtPSbvnRGlCEWZE9cECzLm3aLd3uunZWWDkNnIMru3HXted06YlCwaMb5JdjqLToASwt
 NeiEEGPUVEQgmbAmNoRuJZVh8u4f93vjzOT7vfd+P987n3u/3/t6nOPJzOfeO/fDnfF9v/f9eX/e
 H3N3RESkuhZ0egIiIjK/FOhFRCpOgV5EpOIU6EVEKk6BXkSk4hToRUQqToFeRKTiFOhFRCpOgV5E
@@ -13333,8 +13325,8 @@ KdCLiFTc/weEVXruHt7hPQAAAABJRU5ErkJggg==
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">myTree</span> <span class="o">=</span> <span class="n">createTree</span><span class="p">(</span><span class="n">trainMat</span><span class="p">,</span> <span class="n">ops</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
-<span class="n">yHat</span> <span class="o">=</span> <span class="n">createForeCast</span><span class="p">(</span><span class="n">myTree</span><span class="p">,</span> <span class="n">testMat</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
-<span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">yHat</span><span class="p">,</span> <span class="n">testMat</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">rowvar</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">yHat</span> <span class="o">=</span> <span class="n">createForeCast</span><span class="p">(</span><span class="n">myTree</span><span class="p">,</span> <span class="n">testMat</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
+<span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">yHat</span><span class="p">,</span> <span class="n">testMat</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 </pre></div>
 
 </div>
@@ -13353,7 +13345,7 @@ KdCLiFTc/weEVXruHt7hPQAAAABJRU5ErkJggg==
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>0.964085231822215</pre>
+<pre>0.9640852318222141</pre>
 </div>
 
 </div>
@@ -13368,8 +13360,8 @@ KdCLiFTc/weEVXruHt7hPQAAAABJRU5ErkJggg==
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">myTree</span> <span class="o">=</span> <span class="n">createTree</span><span class="p">(</span><span class="n">trainMat</span><span class="p">,</span> <span class="n">modelLeaf</span><span class="p">,</span> <span class="n">modelErr</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
-<span class="n">yHat</span> <span class="o">=</span> <span class="n">createForeCast</span><span class="p">(</span><span class="n">myTree</span><span class="p">,</span> <span class="n">testMat</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">modelTreeEval</span><span class="p">)</span>
-<span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">yHat</span><span class="p">,</span> <span class="n">testMat</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">rowvar</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">yHat</span> <span class="o">=</span> <span class="n">createForeCast</span><span class="p">(</span><span class="n">myTree</span><span class="p">,</span> <span class="n">testMat</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="n">modelTreeEval</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">yHat</span><span class="p">,</span> <span class="n">testMat</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 </pre></div>
 
 </div>
@@ -13388,7 +13380,7 @@ KdCLiFTc/weEVXruHt7hPQAAAABJRU5ErkJggg==
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>0.9760412191380629</pre>
+<pre>0.9760412191380593</pre>
 </div>
 
 </div>
@@ -13403,10 +13395,10 @@ KdCLiFTc/weEVXruHt7hPQAAAABJRU5ErkJggg==
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ws</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">linearSolve</span><span class="p">(</span><span class="n">trainMat</span><span class="p">)</span>
-<span class="n">yHat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">testMat</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">testMat</span><span class="p">)[</span><span class="mi">0</span><span class="p">]):</span>
-    <span class="n">yHat</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">testMat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">ws</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">ws</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">yHat</span><span class="p">,</span> <span class="n">testMat</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">rowvar</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">yHat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">testMat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">yHat</span><span class="p">)):</span>
+    <span class="n">yHat</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">testMat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">ws</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">ws</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">yHat</span><span class="p">,</span> <span class="n">testMat</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 </pre></div>
 
 </div>
@@ -13425,7 +13417,7 @@ KdCLiFTc/weEVXruHt7hPQAAAABJRU5ErkJggg==
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>0.9434684235674766</pre>
+<pre>0.9434684235674763</pre>
 </div>
 
 </div>
