@@ -11854,7 +11854,7 @@ div#notebook {
             <span class="n">labelCounts</span><span class="p">[</span><span class="n">currentLabel</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">labelCounts</span><span class="p">[</span><span class="n">currentLabel</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="n">shannonEnt</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">shannonEnt</span> <span class="o">=</span> <span class="mf">0.0</span>
     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">labelCounts</span><span class="p">:</span>
         <span class="n">prob</span> <span class="o">=</span> <span class="n">labelCounts</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">/</span> <span class="n">numEntries</span>
         <span class="c1"># Logarithm base 2</span>

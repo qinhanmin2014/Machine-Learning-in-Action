@@ -17,11 +17,11 @@ def loadDataSet(fileName):
         lineArr = line.strip().split('\t')
         dataMat.append([float(lineArr[0]), float(lineArr[1])])
         labelMat.append(float(lineArr[2]))
-    return dataMat, labelMat
+    return np.array(dataMat), np.array(labelMat)
 
 
 def predict(w, x):
-    return w * x.T
+    return np.dot(w, x)
 
 
 def batchPegasos(dataSet, labels, lam, T, k):
@@ -30,22 +30,21 @@ def batchPegasos(dataSet, labels, lam, T, k):
     w = np.zeros(n)
     dataIndex = list(range(m))
     for t in range(1, T + 1):
-        wDelta = np.mat(np.zeros(n))
+        wDelta = np.zeros(n)
         eta = 1 / (lam * t)
         np.random.shuffle(dataIndex)
         for j in range(k):
             i = dataIndex[j]
-            p = predict(w, dataSet[i, :])
+            p = predict(w, dataSet[i])
             if labels[i] * p < 1:
                 # Accumulate changes
-                wDelta += labels[i] * dataSet[i, :].A
+                wDelta += labels[i] * dataSet[i]
         w = (1 - 1 / t) * w + (eta / k) * wDelta
     return w
 
 
 datArr, labelList = loadDataSet('testSet.txt')
-datMat = np.mat(datArr)
-finalWs = batchPegasos(datMat, labelList, 2, 50, 100)
+finalWs = batchPegasos(datArr, labelList, 2, 50, 100)
 print(finalWs)
 
 plt.figure()
@@ -53,16 +52,16 @@ x1, y1 = [], []
 xm1, ym1 = [], []
 for i in range(len(labelList)):
     if labelList[i] == 1.0:
-        x1.append(datMat[i, 0])
-        y1.append(datMat[i, 1])
+        x1.append(datArr[i, 0])
+        y1.append(datArr[i, 1])
     else:
-        xm1.append(datMat[i, 0])
-        ym1.append(datMat[i, 1])
+        xm1.append(datArr[i, 0])
+        ym1.append(datArr[i, 1])
 plt.scatter(x1, y1, marker='s', s=80, edgecolor="black")
 plt.scatter(xm1, ym1, marker='o', s=50, c='red', edgecolor="black")
 x = np.arange(-6.0, 8.0, 0.1)
-y = -finalWs[0, 0] * x / finalWs[0, 1]
-y2 = 0.55309587 * x / 0.04097803
+y = -finalWs[0] * x / finalWs[1]
+y2 = -0.55309587 * x / -0.04097803
 plt.plot(x, y)
 plt.plot(x, y2, 'g-.')
 plt.axis([-6, 8, -4, 5])

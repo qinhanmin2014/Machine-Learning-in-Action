@@ -11,7 +11,7 @@ def read_input(file):
 input = read_input(sys.stdin)
 input = [float(line) for line in input]
 numInputs = len(input)
-input = np.mat(input)
+input = np.array(input)
 sqInput = np.power(input, 2)
 
 print("%d\t%f\t%f" % (numInputs, np.mean(input), np.mean(sqInput)))

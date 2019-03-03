@@ -11,7 +11,7 @@ def loadDataSet(fileName):
         lineArr = line.strip().split('\t')
         dataMat.append([float(lineArr[0]), float(lineArr[1]),
                         float(lineArr[2])])
-    return np.mat(dataMat)
+    return np.array(dataMat)
 
 
 class MRsvm(MRJob):
@@ -22,7 +22,7 @@ class MRsvm(MRJob):
         self.data = loadDataSet(r"D:\github\Machine-Learning-in-Action"
                                 r"\15 Big data and MapReduce\testSet.txt")
         self.w = 0
-        self.eta = 0.69
+        # self.eta = 0.69
         self.dataList = []
         # batch size
         self.k = self.options.batchsize
@@ -49,16 +49,16 @@ class MRsvm(MRJob):
             self.dataList.append(inVals[1])
         elif inVals[0] == 't':
             self.t = inVals[1]
-        else:
-            self.eta = inVals
+        # else:
+        #     self.eta = inVals
 
     def map_fin(self):
         labels = self.data[:, -1]
-        X = self.data[:, 0: -1]
+        X = self.data[:, :-1]
         if self.w == 0:
-            self.w = [0.001] * np.shape(X)[1]
+            self.w = [0.001] * X.shape[1]
         for index in self.dataList:
-            p = np.mat(self.w) * X[index, :].T
+            p = np.dot(np.array(self.w), X[index])
             if labels[index] * p < 1.0:
                 yield (1, ['u', index])
         yield (1, ['w', self.w])
@@ -73,21 +73,21 @@ class MRsvm(MRJob):
             elif valArr[0] == 't':
                 self.t = valArr[1]
         labels = self.data[:, -1]
-        X = self.data[:, 0: -1]
-        wMat = np.mat(self.w)
-        wDelta = np.mat(np.zeros(len(self.w)))
+        X = self.data[:, :-1]
+        wMat = np.array(self.w)
+        wDelta = np.zeros(len(wMat))
         # Combines updates
         for index in self.dataList:
-            wDelta += float(labels[index]) * X[index, :]
+            wDelta += labels[index] * X[index]
         eta = 1 / (2 * self.t)
         wMat = (1 - 1 / self.t) * wMat + (eta / self.k) * wDelta
         for mapperNum in range(1, self.numMappers + 1):
-            yield (mapperNum, ['w', wMat.tolist()[0]])
+            yield (mapperNum, ['w', list(wMat)])
             # if self.t < self.options.iterations:
             yield (mapperNum, ['t', self.t + 1])
-            for j in range(int(self.k / self.numMappers)):
+            for j in range(self.k // self.numMappers):
                 yield (mapperNum,
-                       ['x', np.random.randint(np.shape(self.data)[0])])
+                       ['x', np.random.randint(self.data.shape[0])])
 
     def steps(self):
         return ([MRStep(mapper=self.map, reducer=self.reduce,

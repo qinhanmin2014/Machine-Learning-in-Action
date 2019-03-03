@@ -18,6 +18,6 @@ for instance in mapperOut:
     cumVal += nj * float(instance[1])
     cumSumSq += nj * float(instance[2])
 mean = cumVal / cumN
-varSum = (cumSumSq - 2 * mean * cumVal + cumN * mean * mean) / cumN
+varSum = cumSumSq / cumN - mean * mean
 print("%d\t%f\t%f" % (cumN, mean, varSum))
 print("report: still alive", file=sys.stderr)
