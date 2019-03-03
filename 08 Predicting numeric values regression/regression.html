@@ -11838,7 +11838,7 @@ div#notebook {
         <span class="k">return</span>
     <span class="n">ws</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">xTx</span><span class="p">),</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xArr</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">yArr</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]))</span>
-    <span class="k">return</span> <span class="n">ws</span>
+    <span class="k">return</span> <span class="n">ws</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -11875,7 +11875,7 @@ div#notebook {
         <span class="k">return</span>
     <span class="n">ws</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">xTx</span><span class="p">),</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xArr</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">yArr</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])))</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">testPoint</span><span class="p">,</span> <span class="n">ws</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">testPoint</span><span class="p">,</span> <span class="n">ws</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
 
 
 <span class="k">def</span> <span class="nf">lwlrTest</span><span class="p">(</span><span class="n">testArr</span><span class="p">,</span> <span class="n">xArr</span><span class="p">,</span> <span class="n">yArr</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
@@ -11928,7 +11928,7 @@ div#notebook {
         <span class="k">return</span>
     <span class="n">ws</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">denom</span><span class="p">),</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xArr</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">yArr</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]))</span>
-    <span class="k">return</span> <span class="n">ws</span>
+    <span class="k">return</span> <span class="n">ws</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
 
 
 <span class="k">def</span> <span class="nf">ridgeTest</span><span class="p">(</span><span class="n">xArr</span><span class="p">,</span> <span class="n">yArr</span><span class="p">):</span>
@@ -11942,7 +11942,7 @@ div#notebook {
     <span class="n">wMat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">numTestPts</span><span class="p">,</span> <span class="n">xArr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numTestPts</span><span class="p">):</span>
         <span class="n">ws</span> <span class="o">=</span> <span class="n">ridgeRegres</span><span class="p">(</span><span class="n">xArr</span><span class="p">,</span> <span class="n">yArr</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">10</span><span class="p">))</span>
-        <span class="n">wMat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">ws</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+        <span class="n">wMat</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ws</span>
     <span class="k">return</span> <span class="n">wMat</span>
 </pre></div>
 
@@ -12069,7 +12069,7 @@ div#notebook {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ws</span> <span class="o">=</span> <span class="n">standRegres</span><span class="p">(</span><span class="n">xArr</span><span class="p">,</span> <span class="n">yArr</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">ws</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ws</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12100,7 +12100,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">yHat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xArr</span><span class="p">,</span> <span class="n">ws</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">yHat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xArr</span><span class="p">,</span> <span class="n">ws</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">yHat</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
 </pre></div>
 
@@ -12137,7 +12137,7 @@ div#notebook {
 <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xArr</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">yArr</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
 <span class="n">xCopy</span> <span class="o">=</span> <span class="n">xArr</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">xCopy</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">yHat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xCopy</span><span class="p">,</span> <span class="n">ws</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="n">yHat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xCopy</span><span class="p">,</span> <span class="n">ws</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xCopy</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">yHat</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -12500,7 +12500,7 @@ CCUSRT+EEEokin4IIZRIFP0QQiiR/wFpdB9PT85cOwAAAABJRU5ErkJggg==
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">yHat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xArr</span><span class="p">,</span> <span class="n">ws</span><span class="p">)</span>
-<span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">yHat</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">yArr</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">yHat</span><span class="p">,</span> <span class="n">yArr</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -13546,7 +13546,7 @@ RU5ErkJggg==
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ws</span> <span class="o">=</span> <span class="n">standRegres</span><span class="p">(</span><span class="n">abX</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span> <span class="mi">99</span><span class="p">],</span> <span class="n">abY</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span> <span class="mi">99</span><span class="p">])</span>
-<span class="n">yHat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">abX</span><span class="p">[</span><span class="mi">100</span><span class="p">:</span> <span class="mi">199</span><span class="p">],</span> <span class="n">ws</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="n">yHat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">abX</span><span class="p">[</span><span class="mi">100</span><span class="p">:</span> <span class="mi">199</span><span class="p">],</span> <span class="n">ws</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">rssError</span><span class="p">(</span><span class="n">abY</span><span class="p">[</span><span class="mi">100</span><span class="p">:</span> <span class="mi">199</span><span class="p">],</span> <span class="n">yHat</span><span class="p">))</span>
 </pre></div>
 
@@ -13980,7 +13980,7 @@ uxBCiHNLpKYYIYQQ/SDBLoQQSUaCXQghkowEuxBCJBkJdiGESDIS7EIIkWQk2IUQIslIsAshRJL5
 <span class="n">yMean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">yArr</span><span class="p">)</span>
 <span class="n">yArr</span> <span class="o">=</span> <span class="n">yArr</span> <span class="o">-</span> <span class="n">yMean</span>
 <span class="n">weights</span> <span class="o">=</span> <span class="n">standRegres</span><span class="p">(</span><span class="n">xArr</span><span class="p">,</span> <span class="n">yArr</span><span class="p">)</span>
-<span class="n">weights</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="n">weights</span>
 </pre></div>
 
 </div>
@@ -14345,7 +14345,7 @@ hAgx/w/Z6/9+VVJO0QAAAABJRU5ErkJggg==
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">lgX1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">82</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="n">lgX1</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">lgX</span>
 <span class="n">ws</span> <span class="o">=</span> <span class="n">standRegres</span><span class="p">(</span><span class="n">lgX1</span><span class="p">,</span> <span class="n">lgY</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">ws</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ws</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -14402,8 +14402,7 @@ hAgx/w/Z6/9+VVJO0QAAAABJRU5ErkJggg==
         <span class="n">stdTrain</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">trainX</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">testX</span> <span class="o">=</span> <span class="p">(</span><span class="n">testX</span> <span class="o">-</span> <span class="n">meanTrain</span><span class="p">)</span> <span class="o">/</span> <span class="n">stdTrain</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">):</span>
-            <span class="n">yEst</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">testX</span><span class="p">,</span> <span class="n">wMat</span><span class="p">[</span><span class="n">k</span><span class="p">][:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
-                    <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">trainY</span><span class="p">))</span>
+            <span class="n">yEst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">testX</span><span class="p">,</span> <span class="n">wMat</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">trainY</span><span class="p">)</span>
             <span class="n">errorMat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">rssError</span><span class="p">(</span><span class="n">yEst</span><span class="p">,</span> <span class="n">testY</span><span class="p">)</span>
     <span class="n">meanErrors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errorMat</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">bestWeights</span> <span class="o">=</span> <span class="n">wMat</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">meanErrors</span><span class="p">)]</span>
@@ -14448,8 +14447,8 @@ hAgx/w/Z6/9+VVJO0QAAAABJRU5ErkJggg==
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>the best model from Ridge Regression is:
- [-2.81344817e+01 -2.18803214e-02  2.37756862e+00]
-with constant term:  56463.16363285567
+ [-2.62898317e+01 -1.88898667e-02  2.55326790e+00]
+with constant term:  52690.1386954198
 </pre>
 </div>
 </div>

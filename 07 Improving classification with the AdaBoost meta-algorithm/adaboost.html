@@ -11824,9 +11824,9 @@ div#notebook {
 <span class="k">def</span> <span class="nf">stumpClassify</span><span class="p">(</span><span class="n">dataMatrix</span><span class="p">,</span> <span class="n">dimen</span><span class="p">,</span> <span class="n">threshVal</span><span class="p">,</span> <span class="n">threshIneq</span><span class="p">):</span>
     <span class="n">retArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">dataMatrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">threshIneq</span> <span class="o">==</span> <span class="s1">&#39;lt&#39;</span><span class="p">:</span>
-        <span class="n">retArray</span><span class="p">[</span><span class="n">dataMatrix</span><span class="p">[:,</span> <span class="n">dimen</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">threshVal</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+        <span class="n">retArray</span><span class="p">[</span><span class="n">dataMatrix</span><span class="p">[:,</span> <span class="n">dimen</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">threshVal</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">retArray</span><span class="p">[</span><span class="n">dataMatrix</span><span class="p">[:,</span> <span class="n">dimen</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">threshVal</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+        <span class="n">retArray</span><span class="p">[</span><span class="n">dataMatrix</span><span class="p">[:,</span> <span class="n">dimen</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">threshVal</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
     <span class="k">return</span> <span class="n">retArray</span>
 
 
@@ -11948,14 +11948,14 @@ div#notebook {
 <span class="k">def</span> <span class="nf">plotROC</span><span class="p">(</span><span class="n">predStrengths</span><span class="p">,</span> <span class="n">classLabels</span><span class="p">):</span>
     <span class="n">cur</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
     <span class="n">ySum</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="n">numPosClas</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">classLabels</span> <span class="o">==</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">numPosClas</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">classLabels</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">yStep</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">numPosClas</span>
     <span class="n">xStep</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">classLabels</span><span class="p">)</span> <span class="o">-</span> <span class="n">numPosClas</span><span class="p">)</span>
     <span class="c1"># Get sorted index</span>
     <span class="n">sortedIndicies</span> <span class="o">=</span> <span class="n">predStrengths</span><span class="o">.</span><span class="n">argsort</span><span class="p">()</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">sortedIndicies</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">classLabels</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="mf">1.0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">classLabels</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">delX</span><span class="p">,</span> <span class="n">delY</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">yStep</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">delX</span><span class="p">,</span> <span class="n">delY</span> <span class="o">=</span> <span class="n">xStep</span><span class="p">,</span> <span class="mi">0</span>

@@ -12070,7 +12070,7 @@ MtwlqUCGuyQVyHCXpAIZ7pJUIMNdkgpkuEtSgQx3SSrQ/wORfosIwnfP3AAAAABJRU5ErkJggg==
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">arrayOfLines</span><span class="p">:</span>
         <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="n">listFromLine</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">returnMat</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">listFromLine</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span> <span class="mi">3</span><span class="p">]</span>
+        <span class="n">returnMat</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">listFromLine</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
         <span class="n">classLabelVector</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">listFromLine</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
         <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">returnMat</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">classLabelVector</span><span class="p">)</span>
@@ -13683,15 +13683,15 @@ kUgkqiINGIlEIpGoiv8BqCYg8S9ztHQAAAAASUVORK5CYII=
     <span class="n">datingDataMat</span><span class="p">,</span> <span class="n">datingLabels</span> <span class="o">=</span> <span class="n">file2matrix</span><span class="p">(</span><span class="s1">&#39;datingTestSet2.txt&#39;</span><span class="p">)</span>
     <span class="n">normMat</span><span class="p">,</span> <span class="n">ranges</span><span class="p">,</span> <span class="n">minVals</span> <span class="o">=</span> <span class="n">autoNorm</span><span class="p">(</span><span class="n">datingDataMat</span><span class="p">)</span>
     <span class="n">numTestVecs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">normMat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">hoRatio</span><span class="p">)</span>
-    <span class="n">errorCount</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">errorCount</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numTestVecs</span><span class="p">):</span>
-        <span class="n">classifierResult</span> <span class="o">=</span> <span class="n">classify0</span><span class="p">(</span><span class="n">normMat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="n">normMat</span><span class="p">[</span><span class="n">numTestVecs</span><span class="p">:],</span>
+        <span class="n">classifierResult</span> <span class="o">=</span> <span class="n">classify0</span><span class="p">(</span><span class="n">normMat</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">normMat</span><span class="p">[</span><span class="n">numTestVecs</span><span class="p">:],</span>
                                      <span class="n">datingLabels</span><span class="p">[</span><span class="n">numTestVecs</span><span class="p">:],</span> <span class="mi">3</span><span class="p">)</span>
         <span class="c1"># print(&quot;the classifier came back with: %d, the real answer is: %d&quot;</span>
         <span class="c1">#       % (classifierResult, datingLabels[i]))</span>
         <span class="k">if</span> <span class="n">classifierResult</span> <span class="o">!=</span> <span class="n">datingLabels</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
-            <span class="n">errorCount</span> <span class="o">+=</span> <span class="mf">1.0</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;the total error rate is: </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">errorCount</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">numTestVecs</span><span class="p">)))</span>
+            <span class="n">errorCount</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;the total error rate is: </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">errorCount</span> <span class="o">/</span> <span class="n">numTestVecs</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -13916,10 +13916,10 @@ You will probably like this person: in small doses
         <span class="n">fileStr</span> <span class="o">=</span> <span class="n">fileNameStr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">classNumStr</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">fileStr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">hwLabels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">classNumStr</span><span class="p">)</span>
-        <span class="n">trainingMat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">img2vector</span><span class="p">(</span><span class="s1">&#39;trainingDigits/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">fileNameStr</span><span class="p">)</span>
+        <span class="n">trainingMat</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">img2vector</span><span class="p">(</span><span class="s1">&#39;trainingDigits/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">fileNameStr</span><span class="p">)</span>
     <span class="n">hwLabels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">hwLabels</span><span class="p">)</span>
     <span class="n">testFileList</span> <span class="o">=</span> <span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;testDigits&#39;</span><span class="p">)</span>
-    <span class="n">errorCount</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">errorCount</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">mTest</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">testFileList</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mTest</span><span class="p">):</span>
         <span class="n">fileNameStr</span> <span class="o">=</span> <span class="n">testFileList</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
@@ -13930,9 +13930,9 @@ You will probably like this person: in small doses
         <span class="c1"># print(&quot;the classifier came back with: %d, the real answer is: %d&quot;</span>
         <span class="c1">#       % (classifierResult, classNumStr))</span>
         <span class="k">if</span> <span class="n">classifierResult</span> <span class="o">!=</span> <span class="n">classNumStr</span><span class="p">:</span>
-            <span class="n">errorCount</span> <span class="o">+=</span> <span class="mf">1.0</span>
+            <span class="n">errorCount</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;the total number of errors is: </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">errorCount</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;the total error rate is: </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">errorCount</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">mTest</span><span class="p">)))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;the total error rate is: </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">errorCount</span> <span class="o">/</span> <span class="n">mTest</span><span class="p">))</span>
 </pre></div>
 
 </div>

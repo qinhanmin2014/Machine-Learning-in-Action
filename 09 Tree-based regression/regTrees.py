@@ -124,8 +124,8 @@ def linearSolve(dataSet):
         raise NameError("This matrix is singular, cannot do inverse,\n"
                         "try increasing the second value of ops")
     ws = np.dot(np.linalg.inv(xTx),
-                np.dot(X.T, Y[:, np.newaxis])).ravel()
-    return ws, X, Y
+                np.dot(X.T, Y[:, np.newaxis]))
+    return ws.ravel(), X, Y
 
 
 def modelLeaf(dataSet):
